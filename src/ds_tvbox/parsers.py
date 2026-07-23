@@ -661,10 +661,15 @@ def _string_id(value: Any, *, field_name: str) -> str:
 
 
 def _play_lines(play_from: Any, play_url: Any) -> tuple[MacCmsPlayLine, ...]:
-    if (play_from is None or play_from == "") and (play_url is None or play_url == ""):
-        return ()
-    if not isinstance(play_from, str) or not isinstance(play_url, str):
+    if play_from is not None and not isinstance(play_from, str):
         raise ContractError("playback source and URL fields must both be strings")
+    if play_url is not None and not isinstance(play_url, str):
+        raise ContractError("playback source and URL fields must both be strings")
+    if not play_from or not play_url:
+        # MacCMS list/search responses commonly retain only vod_play_from.
+        # The detail-stage contract remains strict because an empty tuple
+        # cannot produce a playable URL.
+        return ()
     names = play_from.split("$$$")
     lines = play_url.split("$$$")
     if len(names) != len(lines) or not names:

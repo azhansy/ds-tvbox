@@ -186,6 +186,30 @@ def test_maccms_json_home_and_detail_share_canonical_model() -> None:
     assert selected.play_lines[0].episodes[0].url.endswith("index.m3u8")
 
 
+@pytest.mark.parametrize(
+    ("play_from", "play_url"),
+    [("hls", None), ("hls", ""), (None, "episode$https://example.com/x"), ("", "x")],
+)
+def test_maccms_listing_may_omit_half_of_optional_playback_fields(
+    play_from: str | None,
+    play_url: str | None,
+) -> None:
+    payload = {
+        "list": [
+            {
+                "vod_id": "1",
+                "vod_name": "One",
+                "vod_play_from": play_from,
+                "vod_play_url": play_url,
+            }
+        ]
+    }
+    response = parse_maccms_json(json.dumps(payload))
+    assert response.videos[0].play_lines == ()
+    with pytest.raises(ContractError, match="no valid playback"):
+        response.detail("1")
+
+
 def test_maccms_xml_home_and_detail_share_canonical_model() -> None:
     home = parse_maccms_xml((FIXTURES / "home.xml").read_bytes())
     detail = parse_maccms_xml((FIXTURES / "detail.xml").read_bytes())
@@ -373,8 +397,6 @@ def test_maccms_detail_and_container_contracts() -> None:
     ("play_from", "play_url", "message"),
     [
         (1, "x$https://example.com", "both be strings"),
-        ("line", "", "line is empty"),
-        ("", "x$https://example.com", "line is empty"),
         ("line", "episode-without-separator", "no title/URL separator"),
         ("line", "Episode$", "URL is empty"),
         ("line", "Episode$ftp://example.com/x", "invalid scheme"),
