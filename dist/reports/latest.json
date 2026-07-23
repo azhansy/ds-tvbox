@@ -1,0 +1,135 @@
+{
+  "active_release_id": "g00000001",
+  "candidate_ref": "candidate/run-29974298927-attempt-1",
+  "content_commit_sha": null,
+  "content_identity": {
+    "workflow_run_attempt": 1,
+    "workflow_run_id": "29974298927"
+  },
+  "counts": {
+    "current_live_channels": 2,
+    "current_open_license": 0,
+    "current_public_unverified": 2,
+    "current_restricted": 0,
+    "current_takedown": 0,
+    "current_unknown": 0,
+    "current_verified": 0,
+    "current_vod_sites": 1,
+    "previous_live_channels": 0,
+    "previous_open_license": 0,
+    "previous_public_unverified": 0,
+    "previous_restricted": 0,
+    "previous_takedown": 0,
+    "previous_unknown": 0,
+    "previous_verified": 0,
+    "previous_vod_sites": 0
+  },
+  "due": false,
+  "failures": {
+    "credential_query_rejected": 12,
+    "response_too_large": 1
+  },
+  "finished_at": "2026-07-23T02:24:28Z",
+  "forced": true,
+  "gate": {
+    "historical_deletions": [],
+    "inconclusive": false,
+    "inputs": {
+      "current_healthy_live_urls": 2,
+      "current_live_channels": 2,
+      "current_publishable_vod_items": 1,
+      "current_vod_sites": 1,
+      "failed_network_groups": 0,
+      "previous_live_urls": 0,
+      "previous_vod_items": 0
+    },
+    "mandatory_removal_ids": [],
+    "network_probes": [
+      {
+        "attempts": 1,
+        "detail": "ok",
+        "elapsed_ms": 434,
+        "group": "cloudflare_http",
+        "passed": true
+      },
+      {
+        "attempts": 2,
+        "detail": "ok",
+        "elapsed_ms": 360,
+        "group": "dns_public",
+        "passed": true
+      },
+      {
+        "attempts": 1,
+        "detail": "ok",
+        "elapsed_ms": 382,
+        "group": "github_raw",
+        "passed": true
+      },
+      {
+        "attempts": 1,
+        "detail": "ok",
+        "elapsed_ms": 287,
+        "group": "google_http",
+        "passed": true
+      }
+    ],
+    "publish": true,
+    "reasons": [],
+    "release_kind": "bootstrap",
+    "thresholds": {
+      "failed_groups_to_abort": 2,
+      "max_new_failure_ratio": 0.2,
+      "minimum_live_channels": 1,
+      "minimum_previous_items": 5,
+      "minimum_vod_sites": 1
+    }
+  },
+  "generation": 1,
+  "previous_release_head_sha": null,
+  "recovery_due": false,
+  "release_kind": "bootstrap",
+  "schema_version": "1.0.0",
+  "sources": [
+    {
+      "change_summary": {
+        "category": "new",
+        "current": {
+          "publication_status": "stable",
+          "rights_status": "public_unverified",
+          "technical_status": "healthy"
+        },
+        "previous": null
+      },
+      "failure_reason": null,
+      "publication_status": "stable",
+      "rights_status": "public_unverified",
+      "secondary_reasons": [],
+      "source_id": "ikun-vod",
+      "technical_status": "healthy",
+      "upstream_revision": null
+    },
+    {
+      "change_summary": {
+        "category": "new",
+        "current": {
+          "publication_status": "stable",
+          "rights_status": "public_unverified",
+          "technical_status": "healthy"
+        },
+        "previous": null
+      },
+      "failure_reason": null,
+      "publication_status": "stable",
+      "rights_status": "public_unverified",
+      "secondary_reasons": [],
+      "source_id": "iptv-org-cn-cctv",
+      "technical_status": "healthy",
+      "upstream_revision": "383d3951d686277659d5d919bf3f2437163f99cb"
+    }
+  ],
+  "started_at": "2026-07-23T02:24:13Z",
+  "status": "pending",
+  "workflow_run_attempt": 1,
+  "workflow_run_id": "29974298927"
+}

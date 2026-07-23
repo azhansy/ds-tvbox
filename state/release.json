@@ -1,0 +1,13 @@
+{
+  "active_release_id": "g00000001",
+  "content_commit_sha": null,
+  "generation": 1,
+  "last_publish_at": null,
+  "last_success_at": null,
+  "previous_release_head_sha": null,
+  "release_kind": "bootstrap",
+  "schema_version": "1.0.0",
+  "status": "pending",
+  "workflow_run_attempt": 1,
+  "workflow_run_id": "29974298927"
+}

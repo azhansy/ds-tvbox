@@ -1,0 +1,19 @@
+{
+  "active_release_id": "g00000001",
+  "aliases": {
+    "dist/configs/stable.json": "sha256:bee18004eac26925b7ed9e290569ec3d2ea9046eedf22c5fbe77333a81293b47",
+    "dist/health.json": "sha256:c65dafc98b89be934cfc3302734e9c7d6d8997cca2e0070f6c15811a8572f7c8",
+    "dist/index.json": "sha256:a075129febfd99301c74150cd88faf07a23efedb7369d89934331c0acca63908",
+    "dist/live/stable.m3u": "sha256:ce9a68ae341ca92f0fd8f575e523075d93f0a0eb4f7d047c955149dd8afe7234",
+    "dist/warehouse.json": "sha256:678a6249bb40a444576b27c79e81204815db871cbf09d256f56e6cb09a47afbd"
+  },
+  "content_workflow_run_attempt": 1,
+  "content_workflow_run_id": "29974298927",
+  "generated_at": "2026-07-23T02:24:13Z",
+  "previous_commit_sha": null,
+  "release_manifest": {
+    "path": "dist/releases/g00000001/manifest.json",
+    "sha256": "sha256:9cc2174bf63f10ca0f41d91ec718905d8daca89450099e989d046877ef978b06"
+  },
+  "schema_version": "1.0.0"
+}

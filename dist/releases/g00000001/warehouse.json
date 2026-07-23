@@ -1,0 +1,12 @@
+{
+  "storeHouse": [
+    {
+      "sourceName": "DS 稳定仓",
+      "sourceUrl": "https://raw.githubusercontent.com/azhansy/ds-tvbox/generated/dist/releases/g00000001/depots/stable.json"
+    },
+    {
+      "sourceName": "DS 公共实验仓",
+      "sourceUrl": "https://raw.githubusercontent.com/azhansy/ds-tvbox/generated/dist/releases/g00000001/depots/public-unverified.json"
+    }
+  ]
+}

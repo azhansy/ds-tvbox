@@ -1,0 +1,170 @@
+{
+  "channels": [
+    {
+      "candidate_url_ids": [
+        "live-url:iptv-org-cn-cctv:739d063ea58da2cb"
+      ],
+      "entity_id": "channel:374be32285cd7fd6",
+      "identity_basis": "tvg_id",
+      "normalized_identity": "cctvplus2.cn@sd",
+      "publication_status": "stable",
+      "rights_status": "public_unverified",
+      "selected_url_id": "live-url:iptv-org-cn-cctv:739d063ea58da2cb",
+      "technical_status": "healthy"
+    },
+    {
+      "candidate_url_ids": [
+        "live-url:iptv-org-cn-cctv:1ef1a9402f5b3ed8"
+      ],
+      "entity_id": "channel:54f10138eca52744",
+      "identity_basis": "tvg_id",
+      "normalized_identity": "cctvplus1.cn@sd",
+      "publication_status": "stable",
+      "rights_status": "public_unverified",
+      "selected_url_id": "live-url:iptv-org-cn-cctv:1ef1a9402f5b3ed8",
+      "technical_status": "healthy"
+    },
+    {
+      "candidate_url_ids": [
+        "live-url:iptv-org-cn-cctv:8e2353e1112f875a"
+      ],
+      "entity_id": "channel:d501304fcb019bec",
+      "identity_basis": "tvg_id",
+      "normalized_identity": "cctv4america.cn@sd",
+      "publication_status": "withheld",
+      "rights_status": "public_unverified",
+      "selected_url_id": null,
+      "technical_status": "dead"
+    }
+  ],
+  "generated_at": "2026-07-23T02:24:13Z",
+  "generation": 1,
+  "release_id": "g00000001",
+  "schema_version": "1.0.0",
+  "sources": [
+    {
+      "entity_id": "source:ikun-vod",
+      "failure_reason": null,
+      "items": [
+        {
+          "capabilities": {
+            "detail": true,
+            "home": true,
+            "media_probe": true,
+            "play": true,
+            "search": true
+          },
+          "consecutive_failures": 0,
+          "consecutive_successes": 1,
+          "entity_id": "vod:ikun-vod:316789cd5abd36af",
+          "entity_type": "vod_site",
+          "failure_reason": null,
+          "last_success_at": "2026-07-23T02:24:13Z",
+          "publication_status": "stable",
+          "secondary_reasons": [],
+          "technical_status": "healthy"
+        }
+      ],
+      "last_checked_at": "2026-07-23T02:24:13Z",
+      "publication_status": "stable",
+      "rights_status": "public_unverified",
+      "source_id": "ikun-vod",
+      "technical_status": "healthy",
+      "upstream_revision": null
+    },
+    {
+      "entity_id": "source:iptv-org-cn-cctv",
+      "failure_reason": null,
+      "items": [
+        {
+          "bandwidth": 400000,
+          "channel_id": "channel:54f10138eca52744",
+          "consecutive_failures": 0,
+          "consecutive_successes": 1,
+          "entity_id": "live-url:iptv-org-cn-cctv:1ef1a9402f5b3ed8",
+          "entity_type": "live_url",
+          "epg": null,
+          "failure_reason": null,
+          "final_url": "https://cd-live-stream.news.cctvplus.com/live/smil:CHANNEL1.smil/playlist.m3u8",
+          "group": null,
+          "height": 240,
+          "last_success_at": "2026-07-23T02:24:13Z",
+          "logo": null,
+          "media_path_score": 2,
+          "name": "CCTV+ 1 (600p) [Not 24/7]",
+          "normalized_url": "https://cd-live-stream.news.cctvplus.com/live/smil:CHANNEL1.smil/playlist.m3u8",
+          "protocol": "https",
+          "publication_status": "stable",
+          "response_ms": 3328,
+          "response_ms_history": [
+            3328
+          ],
+          "secondary_reasons": [],
+          "technical_status": "healthy",
+          "tvg_id": "CCTVPlus1.cn@SD",
+          "width": 360
+        },
+        {
+          "bandwidth": 300000,
+          "channel_id": "channel:374be32285cd7fd6",
+          "consecutive_failures": 0,
+          "consecutive_successes": 1,
+          "entity_id": "live-url:iptv-org-cn-cctv:739d063ea58da2cb",
+          "entity_type": "live_url",
+          "epg": null,
+          "failure_reason": null,
+          "final_url": "https://cd-live-stream.news.cctvplus.com/live/smil:CHANNEL2.smil/playlist.m3u8",
+          "group": null,
+          "height": 240,
+          "last_success_at": "2026-07-23T02:24:13Z",
+          "logo": null,
+          "media_path_score": 2,
+          "name": "CCTV+ 2 (600p) [Not 24/7]",
+          "normalized_url": "https://cd-live-stream.news.cctvplus.com/live/smil:CHANNEL2.smil/playlist.m3u8",
+          "protocol": "https",
+          "publication_status": "stable",
+          "response_ms": 3119,
+          "response_ms_history": [
+            3119
+          ],
+          "secondary_reasons": [],
+          "technical_status": "healthy",
+          "tvg_id": "CCTVPlus2.cn@SD",
+          "width": 360
+        },
+        {
+          "bandwidth": null,
+          "channel_id": "channel:d501304fcb019bec",
+          "consecutive_failures": 1,
+          "consecutive_successes": 0,
+          "entity_id": "live-url:iptv-org-cn-cctv:8e2353e1112f875a",
+          "entity_type": "live_url",
+          "epg": null,
+          "failure_reason": "response_too_large",
+          "final_url": null,
+          "group": null,
+          "height": null,
+          "last_success_at": null,
+          "logo": null,
+          "media_path_score": 0,
+          "name": "CCTV-4 America (1080p)",
+          "normalized_url": "https://global.cgtn.cicc.media.caton.cloud/master/cgtn-america.m3u8",
+          "protocol": null,
+          "publication_status": "withheld",
+          "response_ms": 1614,
+          "response_ms_history": [],
+          "secondary_reasons": [],
+          "technical_status": "dead",
+          "tvg_id": "CCTV4America.cn@SD",
+          "width": null
+        }
+      ],
+      "last_checked_at": "2026-07-23T02:24:13Z",
+      "publication_status": "stable",
+      "rights_status": "public_unverified",
+      "source_id": "iptv-org-cn-cctv",
+      "technical_status": "healthy",
+      "upstream_revision": "383d3951d686277659d5d919bf3f2437163f99cb"
+    }
+  ]
+}

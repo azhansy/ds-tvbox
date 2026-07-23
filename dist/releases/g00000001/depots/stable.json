@@ -1,0 +1,12 @@
+{
+  "urls": [
+    {
+      "name": "DS 稳定聚合",
+      "url": "https://raw.githubusercontent.com/azhansy/ds-tvbox/generated/dist/releases/g00000001/configs/stable.json"
+    },
+    {
+      "name": "⚠️ iKun 资源",
+      "url": "https://raw.githubusercontent.com/azhansy/ds-tvbox/generated/dist/releases/g00000001/configs/ikun-vod.json"
+    }
+  ]
+}
