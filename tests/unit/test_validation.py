@@ -117,6 +117,44 @@ def test_health_schema_and_graph_relationships_are_strict() -> None:
         validate_health_document(document, SCHEMAS)
 
 
+def test_failed_live_observation_has_no_final_protocol() -> None:
+    document = _health_graph()
+    source = document["sources"][0]
+    item = source["items"][0]
+    channel = document["channels"][0]
+
+    source["technical_status"] = "dead"
+    source["publication_status"] = "withheld"
+    item.update(
+        {
+            "technical_status": "dead",
+            "publication_status": "withheld",
+            "last_success_at": None,
+            "consecutive_successes": 0,
+            "consecutive_failures": 1,
+            "media_path_score": 0,
+            "response_ms_history": [],
+            "protocol": None,
+            "final_url": None,
+            "failure_reason": "response_too_large",
+        }
+    )
+    channel.update(
+        {
+            "technical_status": "dead",
+            "publication_status": "withheld",
+            "selected_url_id": None,
+        }
+    )
+
+    result = validate_health_document(document, SCHEMAS, m3u_urls=())
+    assert result.selected_live_entity_ids == frozenset()
+
+    item["protocol"] = "https"
+    with pytest.raises(ContractError, match="protocol must be null"):
+        validate_health_document(document, SCHEMAS, m3u_urls=())
+
+
 def test_health_graph_rejects_duplicate_and_dangling_entities() -> None:
     duplicate = _health_graph()
     duplicate["sources"].append(dict(duplicate["sources"][0]))

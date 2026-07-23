@@ -1372,7 +1372,9 @@ def _source_report(
             }
         display = display_current or previous or {}
         failure_reason = (
-            observation.failure_reason.value
+            current_health.get("failure_reason")
+            if current_health is not None
+            else observation.failure_reason.value
             if observation is not None and observation.failure_reason is not None
             else source_failure[1].value
             if source_failure is not None and source_failure[1] is not None
@@ -1400,6 +1402,8 @@ def _source_report(
                 "secondary_reasons": (
                     [item.value for item in observation.secondary_reasons]
                     if observation is not None
+                    and observation.failure_reason is not None
+                    and observation.failure_reason.value == failure_reason
                     else []
                 ),
                 "upstream_revision": (

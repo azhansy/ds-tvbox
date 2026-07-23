@@ -365,8 +365,6 @@ def validate_health_document(
             )
             if normalized_url != normalized:
                 raise ContractError("health live normalized_url is not canonical")
-            if item["protocol"] != urlsplit(normalized).scheme:
-                raise ContractError("health live protocol differs from normalized_url")
             if entity_id != _live_url_entity_id(source_id, normalized):
                 raise ContractError("health live entity_id differs from normalized_url")
             expected_channel_id, identity_basis, normalized_identity = _channel_identity(
@@ -384,7 +382,11 @@ def validate_health_document(
                 raise ContractError("health channel candidates disagree on identity facts")
             live_ids_by_channel.setdefault(channel_id, set()).add(entity_id)
             final_url = item["final_url"]
-            if final_url is not None:
+            protocol = item["protocol"]
+            if final_url is None:
+                if protocol is not None:
+                    raise ContractError("health live protocol must be null without final_url")
+            else:
                 assert isinstance(final_url, str)
                 normalized_final = _normalized_live_url(
                     final_url,
@@ -392,6 +394,8 @@ def validate_health_document(
                 )
                 if final_url != normalized_final:
                     raise ContractError("health live final_url is not canonical")
+                if protocol != urlsplit(normalized_final).scheme:
+                    raise ContractError("health live protocol differs from final_url")
                 normalized_final_urls[entity_id] = normalized_final
             for optional_url in ("logo", "epg"):
                 value = item[optional_url]

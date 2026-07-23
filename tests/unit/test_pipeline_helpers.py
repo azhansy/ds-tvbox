@@ -243,6 +243,49 @@ def test_safety_source_report_keeps_removed_observation_out_of_current_snapshot(
     assert reports[new_source.id]["change_summary"]["current"] is None
 
 
+def test_source_report_uses_health_aggregate_not_failed_child_observation() -> None:
+    original = _collection()
+    live_source = next(
+        source for source in original.sources if source.kind.value == "live_playlist"
+    )
+    result = replace(
+        original,
+        source_observations=(
+            SourceObservation(
+                source_id=live_source.id,
+                fetch_mode=live_source.fetch.mode.value,
+                resolved_revision="deadbeef",
+                resolved_fetch_url=live_source.fetch.reviewed_url,
+                content_sha256="0" * 64,
+                terms_sha256={},
+                technical_status=TechnicalStatus.HEALTHY,
+                failure_reason=FailureReason.RESPONSE_TOO_LARGE,
+                secondary_reasons=(),
+                enumerated=True,
+            ),
+        ),
+    )
+    health = {
+        "sources": [
+            {
+                "source_id": live_source.id,
+                "technical_status": "healthy",
+                "publication_status": "stable",
+                "rights_status": "public_unverified",
+                "failure_reason": None,
+                "upstream_revision": "deadbeef",
+            }
+        ]
+    }
+
+    report = next(
+        item for item in _source_report(result, health, None) if item["source_id"] == live_source.id
+    )
+
+    assert report["failure_reason"] is None
+    assert report["secondary_reasons"] == []
+
+
 def test_active_release_url_match_finds_source_removed_from_registry(tmp_path: Path) -> None:
     release = tmp_path / "dist/releases/g00000001"
     (release / "configs").mkdir(parents=True)
