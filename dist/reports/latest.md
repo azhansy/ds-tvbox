@@ -1,6 +1,6 @@
 # DS TVBox 刷新报告
 
-- 状态：`pending`
+- 状态：`success`
 - 发布类型：`bootstrap`
 - generation：`1`
 - active release：`g00000001`
@@ -8,10 +8,10 @@
 - 候选 ref：`candidate/run-29974298927-attempt-1`
 - 内容来源事件：`29974298927/1`
 - 上一 generated HEAD：``
-- 内容提交：``
+- 内容提交：`727e41369c59dddc58395ce6a24bc90cf233e9c1`
 - due / force / recovery：`False` / `True` / `False`
 - 开始：`2026-07-23T02:24:13Z`
-- 结束：`2026-07-23T02:24:28Z`
+- 结束：`2026-07-23T02:24:58Z`
 
 ## 数量
 
