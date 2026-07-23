@@ -12,6 +12,8 @@ DS TVBox 是一个公开、可审计的 TVBox/FongMi 配置聚合仓。它从显
 - 旧影视仓多仓：`https://raw.githubusercontent.com/azhansy/ds-tvbox/generated/dist/warehouse.json`
 - 不支持多仓的客户端：`https://raw.githubusercontent.com/azhansy/ds-tvbox/generated/dist/configs/stable.json`
 
+首次创建 `generated` 分支后，GitHub Raw 边缘节点可能在最长约 `5` 分钟内保留创建前的 `404` 缓存；发布 Action 只有在上述三个裸地址及其当前 release 引用均回读为 `200` 且哈希一致后才会成功。稳定地址不会因此改变。
+
 多仓协议本身不会跨仓搜索。第一条“DS 稳定聚合”会把本轮通过完整验效的点播站点合并到当前配置，客户端只搜索当前配置中的 `sites[]`。
 
 ## 权利与风险说明
