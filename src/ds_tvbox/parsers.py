@@ -673,8 +673,13 @@ def _play_lines(play_from: Any, play_url: Any) -> tuple[MacCmsPlayLine, ...]:
     for name, line in zip(names, lines, strict=True):
         if not name.strip() or not line.strip():
             raise ContractError("playback line is empty")
+        raw_episodes = line.split("#")
+        while raw_episodes and not raw_episodes[-1].strip():
+            raw_episodes.pop()
+        if not raw_episodes:
+            raise ContractError("playback line is empty")
         episodes: list[MacCmsEpisode] = []
-        for raw_episode in line.split("#"):
+        for raw_episode in raw_episodes:
             if "$" not in raw_episode:
                 raise ContractError("playback episode has no title/URL separator")
             title, url = raw_episode.split("$", 1)

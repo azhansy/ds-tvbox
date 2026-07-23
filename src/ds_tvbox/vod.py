@@ -278,7 +278,12 @@ def extract_play_urls(entry: VodEntry) -> tuple[str, ...]:
     for provider, route in zip(providers, routes, strict=True):
         if not provider.strip() or not route.strip():
             raise ProbeRequestError(FailureReason.PLAY_CONTRACT_FAILED)
-        for episode in route.split("#"):
+        episodes = route.split("#")
+        while episodes and not episodes[-1].strip():
+            episodes.pop()
+        if not episodes:
+            raise ProbeRequestError(FailureReason.PLAY_CONTRACT_FAILED)
+        for episode in episodes:
             if "$" not in episode:
                 raise ProbeRequestError(FailureReason.PLAY_CONTRACT_FAILED)
             title, url = episode.split("$", 1)

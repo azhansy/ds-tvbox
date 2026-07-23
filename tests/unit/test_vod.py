@@ -255,6 +255,26 @@ def test_play_contract_rejects_missing_or_mismatched_routes() -> None:
     assert canonical_failure.value.reason is FailureReason.PLAY_CONTRACT_FAILED
 
 
+def test_play_contract_accepts_only_trailing_empty_episode_tokens() -> None:
+    document = parse_maccms_json(
+        b'{"list":[{"vod_id":"1","vod_name":"x",'
+        b'"vod_play_from":"hls","vod_play_url":'
+        b'"episode$https://media.example.test/index.m3u8#"}]}'
+    )
+    assert extract_play_urls(document.videos[0]) == (
+        "https://media.example.test/index.m3u8",
+    )
+
+    with pytest.raises(ProbeRequestError) as interior_empty:
+        parse_maccms_json(
+            b'{"list":[{"vod_id":"1","vod_name":"x",'
+            b'"vod_play_from":"hls","vod_play_url":'
+            b'"one$https://media.example.test/1.m3u8##'
+            b'two$https://media.example.test/2.m3u8"}]}'
+        )
+    assert interior_empty.value.reason is FailureReason.PLAY_CONTRACT_FAILED
+
+
 @pytest.mark.parametrize("site_type", [0, 1])
 def test_probe_vod_completes_full_maccms_chain(site_type: int) -> None:
     client = FakeClient(xml_responder if site_type == 0 else json_responder)
