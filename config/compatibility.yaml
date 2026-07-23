@@ -1,0 +1,14 @@
+version: 1
+owner: azhansy
+repository: ds-tvbox
+generated_ref: generated
+clients:
+  - name: FongMi/TV
+    revision: 5fdff00a602dc56e8ba756174daef20edab024f2
+    capabilities: [urls, sites, m3u]
+  - name: q215613905/TVBoxOS
+    revision: 0409954033a44582b431d89934e3980900f4a265
+    capabilities: [urls, sites, aggregate_search, m3u]
+  - name: mlabalabala/box
+    revision: c5dc2b98569e829650dc680ae2588299fad79542
+    capabilities: [storeHouse, urls, sites, m3u]

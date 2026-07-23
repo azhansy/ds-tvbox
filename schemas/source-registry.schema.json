@@ -1,0 +1,264 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/azhansy/ds-tvbox/main/schemas/source-registry.schema.json",
+  "title": "DS TVBox source registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "sources"],
+  "properties": {
+    "version": { "const": 1 },
+    "sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/source" }
+    }
+  },
+  "$defs": {
+    "nullableString": { "type": ["string", "null"] },
+    "fetch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "reviewed_url",
+        "repository_url",
+        "track_ref",
+        "config_path",
+        "reviewed_revision"
+      ],
+      "properties": {
+        "mode": {
+          "enum": ["direct_url", "github_tracked_file", "github_repository"]
+        },
+        "reviewed_url": { "$ref": "#/$defs/nullableString" },
+        "repository_url": { "$ref": "#/$defs/nullableString" },
+        "track_ref": { "$ref": "#/$defs/nullableString" },
+        "config_path": { "$ref": "#/$defs/nullableString" },
+        "reviewed_revision": {
+          "anyOf": [
+            { "type": "null" },
+            { "type": "string", "pattern": "^[0-9a-f]{40}$" }
+          ]
+        }
+      }
+    },
+    "termsWatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "url", "path", "reviewed_sha256"],
+      "properties": {
+        "type": { "enum": ["url", "github_path"] },
+        "url": { "$ref": "#/$defs/nullableString" },
+        "path": { "$ref": "#/$defs/nullableString" },
+        "reviewed_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "httpException": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["host", "port", "path_prefix", "reason", "reviewed_at"],
+      "properties": {
+        "host": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+        "port": { "type": "integer", "minimum": 1, "maximum": 65535 },
+        "path_prefix": { "type": "string", "pattern": "^/" },
+        "reason": { "type": "string", "minLength": 1 },
+        "reviewed_at": { "type": "string", "format": "date" }
+      }
+    },
+    "catalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_depth",
+        "path_globs",
+        "parsers_by_glob",
+        "selectors",
+        "max_files",
+        "max_candidates",
+        "max_live_urls",
+        "allowed_downstream_hosts",
+        "auto_onboard_public_unverified"
+      ],
+      "properties": {
+        "max_depth": { "type": "integer", "minimum": 1 },
+        "path_globs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "parsers_by_glob": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["glob", "parser"],
+            "properties": {
+              "glob": { "type": "string", "minLength": 1 },
+              "parser": {
+                "enum": ["tvbox_json", "tvbox_json5", "m3u", "txt_live"]
+              }
+            }
+          }
+        },
+        "selectors": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["sites_arrays", "depot_arrays", "storehouse_arrays", "live_arrays"],
+          "properties": {
+            "sites_arrays": { "$ref": "#/$defs/pointers" },
+            "depot_arrays": { "$ref": "#/$defs/pointers" },
+            "storehouse_arrays": { "$ref": "#/$defs/pointers" },
+            "live_arrays": { "$ref": "#/$defs/pointers" }
+          }
+        },
+        "max_files": { "type": "integer", "minimum": 1 },
+        "max_candidates": { "type": "integer", "minimum": 1 },
+        "max_live_urls": { "type": "integer", "minimum": 1 },
+        "allowed_downstream_hosts": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+          "uniqueItems": true
+        },
+        "auto_onboard_public_unverified": { "type": "boolean" }
+      }
+    },
+    "pointers": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^/" },
+      "uniqueItems": true
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "parser",
+        "enabled",
+        "fetch",
+        "terms_watch",
+        "discovery_evidence",
+        "rights_status",
+        "config_license_status",
+        "content_rights_status",
+        "license_spdx",
+        "license_url",
+        "rights_evidence",
+        "allowed_hosts",
+        "allow_discovered_media_hosts",
+        "http_exceptions",
+        "category_policy",
+        "client_site",
+        "catalog",
+        "reviewed_at"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "kind": {
+          "enum": ["vod_site", "vod_config", "live_playlist", "repository_catalog"]
+        },
+        "parser": {
+          "enum": [
+            "maccms_json",
+            "maccms_xml",
+            "tvbox_json",
+            "tvbox_json5",
+            "m3u",
+            "txt_live",
+            "repository_catalog"
+          ]
+        },
+        "enabled": { "type": "boolean" },
+        "fetch": { "$ref": "#/$defs/fetch" },
+        "terms_watch": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/termsWatch" }
+        },
+        "discovery_evidence": { "type": ["object", "null"] },
+        "rights_status": {
+          "enum": [
+            "verified",
+            "open_license",
+            "public_unverified",
+            "restricted",
+            "takedown",
+            "unknown"
+          ]
+        },
+        "config_license_status": { "enum": ["verified", "unknown", "restricted"] },
+        "content_rights_status": {
+          "enum": ["verified", "unverified", "restricted", "takedown"]
+        },
+        "license_spdx": { "type": "string", "minLength": 1 },
+        "license_url": { "$ref": "#/$defs/nullableString" },
+        "rights_evidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["summary", "urls"],
+          "properties": {
+            "summary": { "type": "string", "minLength": 1 },
+            "urls": {
+              "type": "array",
+              "items": { "type": "string", "format": "uri" }
+            }
+          }
+        },
+        "allowed_hosts": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[a-z0-9.-]+$" }
+        },
+        "allow_discovered_media_hosts": { "type": "boolean" },
+        "http_exceptions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/httpException" }
+        },
+        "category_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["deny_names"],
+          "properties": {
+            "deny_names": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 },
+              "uniqueItems": true
+            }
+          }
+        },
+        "client_site": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "key",
+                "name",
+                "searchable",
+                "quickSearch",
+                "filterable",
+                "changeable"
+              ],
+              "properties": {
+                "key": { "type": "string", "minLength": 1 },
+                "name": { "type": "string", "minLength": 1 },
+                "searchable": { "enum": [0, 1] },
+                "quickSearch": { "enum": [0, 1] },
+                "filterable": { "enum": [0, 1] },
+                "changeable": { "enum": [0, 1] }
+              }
+            }
+          ]
+        },
+        "catalog": {
+          "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/catalog" }]
+        },
+        "reviewed_at": { "type": "string", "format": "date" }
+      }
+    }
+  }
+}

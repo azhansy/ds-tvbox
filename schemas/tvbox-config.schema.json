@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/azhansy/ds-tvbox/main/schemas/tvbox-config.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["sites", "lives", "parses"],
+  "properties": {
+    "sites": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "key",
+          "name",
+          "type",
+          "api",
+          "searchable",
+          "quickSearch",
+          "filterable",
+          "changeable"
+        ],
+        "properties": {
+          "key": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "type": { "enum": [0, 1, 4] },
+          "api": { "type": "string", "pattern": "^https://" },
+          "searchable": { "enum": [0, 1] },
+          "quickSearch": { "enum": [0, 1] },
+          "filterable": { "enum": [0, 1] },
+          "changeable": { "enum": [0, 1] },
+          "categories": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "lives": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "type", "url"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "type": { "const": 0 },
+          "url": { "type": "string", "pattern": "^https://" }
+        }
+      }
+    },
+    "parses": { "type": "array", "maxItems": 0 }
+  }
+}

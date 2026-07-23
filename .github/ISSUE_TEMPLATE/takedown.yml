@@ -1,0 +1,29 @@
+name: Takedown request / 下架请求
+description: Request removal of a source or URL. Do not include credentials.
+title: "[Takedown] "
+labels: ["takedown"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请勿提交 Cookie、Token、账号、签名 URL 或其他秘密。必要时使用 GitHub Security Advisory。
+  - type: input
+    id: source
+    attributes:
+      label: Source ID or public URL
+    validations:
+      required: true
+  - type: textarea
+    id: relationship
+    attributes:
+      label: Rights relationship
+      description: Explain your relationship to the source or rights holder.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Public evidence
+      description: Link to non-sensitive evidence supporting this request.
+    validations:
+      required: true

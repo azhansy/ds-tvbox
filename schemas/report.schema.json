@@ -1,0 +1,279 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/azhansy/ds-tvbox/main/schemas/report.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "failureReason": {
+      "enum": [
+        "fetch_timeout", "dns_failure", "tls_failure", "http_404", "http_410",
+        "rate_limited", "upstream_5xx", "invalid_json", "invalid_xml",
+        "schema_incompatible", "home_contract_failed", "search_contract_failed",
+        "detail_contract_failed", "play_contract_failed", "media_probe_failed",
+        "credential_required", "credential_query_rejected",
+        "credential_header_rejected", "invalid_header_syntax",
+        "private_address_rejected", "dangerous_scheme_rejected",
+        "response_too_large", "client_http_disallowed", "client_header_unsupported",
+        "client_extension_unsupported", "unsupported_spider", "unsupported_environment",
+        "blocked_by_source", "missing_upstream", "terms_changed", "rights_restricted",
+        "takedown", "catalog_depth_exceeded", "catalog_limit_exceeded"
+      ]
+    },
+    "technicalStatus": {
+      "enum": ["unknown", "healthy", "partial", "suspect", "dead", "unsupported_environment"]
+    },
+    "publicationStatus": {
+      "enum": ["stable", "experimental", "withheld", "rejected"]
+    },
+    "rightsStatus": {
+      "enum": ["verified", "open_license", "public_unverified", "restricted", "takedown", "unknown"]
+    },
+    "statusSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["technical_status", "publication_status", "rights_status"],
+      "properties": {
+        "technical_status": { "$ref": "#/$defs/technicalStatus" },
+        "publication_status": { "$ref": "#/$defs/publicationStatus" },
+        "rights_status": { "$ref": "#/$defs/rightsStatus" }
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "status",
+    "release_kind",
+    "generation",
+    "active_release_id",
+    "workflow_run_id",
+    "workflow_run_attempt",
+    "started_at",
+    "finished_at",
+    "due",
+    "forced",
+    "recovery_due",
+    "counts",
+    "gate",
+    "failures",
+    "sources"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "status": { "enum": ["pending", "success", "safety_degraded", "failed", "inconclusive", "delivery_unverified"] },
+    "release_kind": { "enum": ["bootstrap", "regular", "safety", "rollback"] },
+    "generation": { "type": "integer", "minimum": 1 },
+    "active_release_id": { "type": "string", "pattern": "^g[0-9]{8}$" },
+    "workflow_run_id": { "type": "string", "minLength": 1 },
+    "workflow_run_attempt": { "type": "integer", "minimum": 1 },
+    "started_at": { "type": "string", "format": "date-time" },
+    "finished_at": { "type": "string", "format": "date-time" },
+    "due": { "type": "boolean" },
+    "forced": { "type": "boolean" },
+    "recovery_due": { "type": "boolean" },
+    "previous_release_head_sha": { "type": ["string", "null"] },
+    "content_commit_sha": { "type": ["string", "null"] },
+    "candidate_ref": { "type": ["string", "null"] },
+    "content_identity": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["workflow_run_id", "workflow_run_attempt"],
+      "properties": {
+        "workflow_run_id": { "type": "string", "minLength": 1 },
+        "workflow_run_attempt": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "previous_vod_sites", "current_vod_sites",
+        "previous_live_channels", "current_live_channels",
+        "previous_verified", "previous_open_license", "previous_public_unverified",
+        "previous_restricted", "previous_takedown", "previous_unknown",
+        "current_verified", "current_open_license", "current_public_unverified",
+        "current_restricted", "current_takedown", "current_unknown"
+      ],
+      "properties": {
+        "previous_vod_sites": { "type": "integer", "minimum": 0 },
+        "current_vod_sites": { "type": "integer", "minimum": 0 },
+        "previous_live_channels": { "type": "integer", "minimum": 0 },
+        "current_live_channels": { "type": "integer", "minimum": 0 },
+        "previous_verified": { "type": "integer", "minimum": 0 },
+        "previous_open_license": { "type": "integer", "minimum": 0 },
+        "previous_public_unverified": { "type": "integer", "minimum": 0 },
+        "previous_restricted": { "type": "integer", "minimum": 0 },
+        "previous_takedown": { "type": "integer", "minimum": 0 },
+        "previous_unknown": { "type": "integer", "minimum": 0 },
+        "current_verified": { "type": "integer", "minimum": 0 },
+        "current_open_license": { "type": "integer", "minimum": 0 },
+        "current_public_unverified": { "type": "integer", "minimum": 0 },
+        "current_restricted": { "type": "integer", "minimum": 0 },
+        "current_takedown": { "type": "integer", "minimum": 0 },
+        "current_unknown": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "publish", "inconclusive", "release_kind", "reasons",
+        "mandatory_removal_ids", "historical_deletions", "inputs", "thresholds",
+        "network_probes"
+      ],
+      "properties": {
+        "publish": { "type": "boolean" },
+        "inconclusive": { "type": "boolean" },
+        "release_kind": { "enum": ["bootstrap", "regular", "safety", "rollback"] },
+        "reasons": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "mandatory_removal", "safety_state_unavailable", "safety_baseline_unavailable",
+              "safety_degraded", "state_unavailable", "previous_release_unknown",
+              "vod_failure_ratio", "live_failure_ratio", "vod_zero", "live_zero",
+              "minimum_vod_sites", "minimum_live_channels", "network_outage"
+            ]
+          }
+        },
+        "mandatory_removal_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^(?:source|vod|live-url):" }
+        },
+        "historical_deletions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^dist/releases/g[0-9]{8}$" }
+        },
+        "inputs": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "previous_vod_items", "current_publishable_vod_items", "previous_live_urls",
+            "current_healthy_live_urls", "current_vod_sites", "current_live_channels",
+            "failed_network_groups"
+          ],
+          "properties": {
+            "previous_vod_items": { "type": "integer", "minimum": 0 },
+            "current_publishable_vod_items": { "type": "integer", "minimum": 0 },
+            "previous_live_urls": { "type": "integer", "minimum": 0 },
+            "current_healthy_live_urls": { "type": "integer", "minimum": 0 },
+            "current_vod_sites": { "type": "integer", "minimum": 0 },
+            "current_live_channels": { "type": "integer", "minimum": 0 },
+            "failed_network_groups": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "thresholds": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "minimum_vod_sites", "minimum_live_channels", "minimum_previous_items",
+            "max_new_failure_ratio", "failed_groups_to_abort"
+          ],
+          "properties": {
+            "minimum_vod_sites": { "type": "integer", "minimum": 0 },
+            "minimum_live_channels": { "type": "integer", "minimum": 0 },
+            "minimum_previous_items": { "type": "integer", "minimum": 0 },
+            "max_new_failure_ratio": { "type": "number", "minimum": 0, "maximum": 1 },
+            "failed_groups_to_abort": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "network_probes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["group", "passed", "attempts", "elapsed_ms", "detail"],
+            "properties": {
+              "group": { "enum": ["github_raw", "dns_public", "cloudflare_http", "google_http"] },
+              "passed": { "type": "boolean" },
+              "attempts": { "type": "integer", "minimum": 0 },
+              "elapsed_ms": { "type": "integer", "minimum": 0 },
+              "detail": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "failures": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/failureReason" },
+      "additionalProperties": { "type": "integer", "minimum": 1 }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id", "technical_status", "publication_status", "rights_status",
+          "failure_reason", "secondary_reasons", "upstream_revision", "change_summary"
+        ],
+        "properties": {
+          "source_id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+          "technical_status": { "$ref": "#/$defs/technicalStatus" },
+          "publication_status": { "$ref": "#/$defs/publicationStatus" },
+          "rights_status": { "$ref": "#/$defs/rightsStatus" },
+          "failure_reason": {
+            "oneOf": [
+              { "$ref": "#/$defs/failureReason" },
+              { "type": "null" }
+            ]
+          },
+          "secondary_reasons": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "$ref": "#/$defs/failureReason" }
+          },
+          "upstream_revision": {
+            "oneOf": [
+              { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+              { "type": "null" }
+            ]
+          },
+          "change_summary": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["category", "previous", "current"],
+            "properties": {
+              "category": {
+                "enum": [
+                  "new", "recovered", "degraded", "withheld", "dead",
+                  "rejected", "removed", "unchanged"
+                ]
+              },
+              "previous": {
+                "oneOf": [
+                  { "$ref": "#/$defs/statusSnapshot" },
+                  { "type": "null" }
+                ]
+              },
+              "current": {
+                "oneOf": [
+                  { "$ref": "#/$defs/statusSnapshot" },
+                  { "type": "null" }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "safety_degraded" } } },
+      "then": {
+        "properties": {
+          "release_kind": { "const": "safety" },
+          "gate": {
+            "properties": {
+              "reasons": { "contains": { "const": "safety_degraded" } }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

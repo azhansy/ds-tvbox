@@ -1,0 +1,10 @@
+{
+  "list": [
+    {
+      "vod_id": 101,
+      "vod_name": "测试影片",
+      "vod_play_from": "hls",
+      "vod_play_url": "正片$https://media.example.test/movie/index.m3u8"
+    }
+  ]
+}

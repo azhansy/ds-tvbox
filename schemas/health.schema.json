@@ -1,0 +1,249 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/azhansy/ds-tvbox/main/schemas/health.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "sourceId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "technicalStatus": {
+      "enum": ["unknown", "healthy", "partial", "suspect", "dead", "unsupported_environment"]
+    },
+    "publicationStatus": {
+      "enum": ["stable", "experimental", "withheld", "rejected"]
+    },
+    "rightsStatus": {
+      "enum": ["verified", "open_license", "public_unverified", "restricted", "takedown", "unknown"]
+    },
+    "failureReason": {
+      "enum": [
+        "fetch_timeout", "dns_failure", "tls_failure", "http_404", "http_410",
+        "rate_limited", "upstream_5xx", "invalid_json", "invalid_xml",
+        "schema_incompatible", "home_contract_failed", "search_contract_failed",
+        "detail_contract_failed", "play_contract_failed", "media_probe_failed",
+        "credential_required", "credential_query_rejected",
+        "credential_header_rejected", "invalid_header_syntax",
+        "private_address_rejected", "dangerous_scheme_rejected",
+        "response_too_large", "client_http_disallowed", "client_header_unsupported",
+        "client_extension_unsupported", "unsupported_spider", "unsupported_environment",
+        "blocked_by_source", "missing_upstream", "terms_changed", "rights_restricted",
+        "takedown", "catalog_depth_exceeded", "catalog_limit_exceeded"
+      ]
+    },
+    "failureReasonOrNull": {
+      "oneOf": [
+        { "$ref": "#/$defs/failureReason" },
+        { "type": "null" }
+      ]
+    },
+    "dateTimeOrNull": {
+      "oneOf": [
+        { "type": "string", "format": "date-time" },
+        { "type": "null" }
+      ]
+    },
+    "secondaryReasons": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/failureReason" }
+    },
+    "vodItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entity_type", "entity_id", "technical_status", "publication_status",
+        "last_success_at", "consecutive_successes", "consecutive_failures",
+        "capabilities", "failure_reason", "secondary_reasons"
+      ],
+      "properties": {
+        "entity_type": { "const": "vod_site" },
+        "entity_id": {
+          "type": "string",
+          "pattern": "^vod:[a-z0-9]+(?:-[a-z0-9]+)*:[0-9a-f]{16}$"
+        },
+        "technical_status": { "$ref": "#/$defs/technicalStatus" },
+        "publication_status": { "$ref": "#/$defs/publicationStatus" },
+        "last_success_at": { "$ref": "#/$defs/dateTimeOrNull" },
+        "consecutive_successes": { "type": "integer", "minimum": 0 },
+        "consecutive_failures": { "type": "integer", "minimum": 0 },
+        "capabilities": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["home", "search", "detail", "play", "media_probe"],
+          "properties": {
+            "home": { "type": "boolean" },
+            "search": { "type": "boolean" },
+            "detail": { "type": "boolean" },
+            "play": { "type": "boolean" },
+            "media_probe": { "type": "boolean" }
+          }
+        },
+        "failure_reason": { "$ref": "#/$defs/failureReasonOrNull" },
+        "secondary_reasons": { "$ref": "#/$defs/secondaryReasons" }
+      }
+    },
+    "liveItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entity_type", "entity_id", "channel_id", "technical_status",
+        "publication_status", "last_success_at", "consecutive_successes",
+        "consecutive_failures", "media_path_score", "response_ms",
+        "response_ms_history", "protocol", "final_url", "normalized_url", "name",
+        "tvg_id", "group", "logo", "epg", "width", "height", "bandwidth",
+        "failure_reason", "secondary_reasons"
+      ],
+      "properties": {
+        "entity_type": { "const": "live_url" },
+        "entity_id": {
+          "type": "string",
+          "pattern": "^live-url:[a-z0-9]+(?:-[a-z0-9]+)*:[0-9a-f]{16}$"
+        },
+        "channel_id": { "type": "string", "pattern": "^channel:[0-9a-f]{16}$" },
+        "technical_status": { "$ref": "#/$defs/technicalStatus" },
+        "publication_status": { "$ref": "#/$defs/publicationStatus" },
+        "last_success_at": { "$ref": "#/$defs/dateTimeOrNull" },
+        "consecutive_successes": { "type": "integer", "minimum": 0 },
+        "consecutive_failures": { "type": "integer", "minimum": 0 },
+        "media_path_score": { "type": "integer", "minimum": 0 },
+        "response_ms": {
+          "oneOf": [
+            { "type": "integer", "minimum": 0 },
+            { "type": "null" }
+          ]
+        },
+        "response_ms_history": {
+          "type": "array",
+          "maxItems": 7,
+          "items": { "type": "integer", "minimum": 0 }
+        },
+        "protocol": {
+          "oneOf": [
+            { "const": "https" },
+            { "type": "null" }
+          ]
+        },
+        "final_url": {
+          "oneOf": [
+            { "type": "string", "pattern": "^https://", "maxLength": 8192 },
+            { "type": "null" }
+          ]
+        },
+        "normalized_url": {
+          "type": "string",
+          "pattern": "^https://",
+          "maxLength": 8192
+        },
+        "name": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "tvg_id": { "type": ["string", "null"], "maxLength": 1024 },
+        "group": { "type": ["string", "null"], "maxLength": 1024 },
+        "logo": { "type": ["string", "null"], "maxLength": 8192 },
+        "epg": { "type": ["string", "null"], "maxLength": 8192 },
+        "width": {
+          "oneOf": [
+            { "type": "integer", "minimum": 0 },
+            { "type": "null" }
+          ]
+        },
+        "height": {
+          "oneOf": [
+            { "type": "integer", "minimum": 0 },
+            { "type": "null" }
+          ]
+        },
+        "bandwidth": {
+          "oneOf": [
+            { "type": "integer", "minimum": 0 },
+            { "type": "null" }
+          ]
+        },
+        "failure_reason": { "$ref": "#/$defs/failureReasonOrNull" },
+        "secondary_reasons": { "$ref": "#/$defs/secondaryReasons" }
+      }
+    }
+  },
+  "required": ["schema_version", "generated_at", "generation", "release_id", "sources", "channels"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "generation": { "type": "integer", "minimum": 1 },
+    "release_id": { "type": "string", "pattern": "^g[0-9]{8}$" },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "entity_id", "source_id", "technical_status", "publication_status",
+          "rights_status", "last_checked_at", "upstream_revision", "failure_reason", "items"
+        ],
+        "properties": {
+          "entity_id": {
+            "type": "string",
+            "pattern": "^source:[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "source_id": { "$ref": "#/$defs/sourceId" },
+          "technical_status": { "$ref": "#/$defs/technicalStatus" },
+          "publication_status": { "$ref": "#/$defs/publicationStatus" },
+          "rights_status": { "$ref": "#/$defs/rightsStatus" },
+          "last_checked_at": { "type": "string", "format": "date-time" },
+          "upstream_revision": {
+            "oneOf": [
+              { "type": "string", "pattern": "^(?:[0-9a-f]{40}|sha256:[0-9a-f]{64})$" },
+              { "type": "null" }
+            ]
+          },
+          "failure_reason": { "$ref": "#/$defs/failureReasonOrNull" },
+          "items": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                { "$ref": "#/$defs/vodItem" },
+                { "$ref": "#/$defs/liveItem" }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "channels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "entity_id", "identity_basis", "normalized_identity", "technical_status",
+          "publication_status", "rights_status", "selected_url_id", "candidate_url_ids"
+        ],
+        "properties": {
+          "entity_id": { "type": "string", "pattern": "^channel:[0-9a-f]{16}$" },
+          "identity_basis": { "enum": ["tvg_id", "source_name"] },
+          "normalized_identity": { "type": "string", "minLength": 1 },
+          "technical_status": { "$ref": "#/$defs/technicalStatus" },
+          "publication_status": { "$ref": "#/$defs/publicationStatus" },
+          "rights_status": { "$ref": "#/$defs/rightsStatus" },
+          "selected_url_id": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^live-url:[a-z0-9]+(?:-[a-z0-9]+)*:[0-9a-f]{16}$"
+              },
+              { "type": "null" }
+            ]
+          },
+          "candidate_url_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^live-url:[a-z0-9]+(?:-[a-z0-9]+)*:[0-9a-f]{16}$"
+            }
+          }
+        }
+      }
+    }
+  }
+}

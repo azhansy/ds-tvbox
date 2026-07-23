@@ -1,0 +1,35 @@
+version: 1
+minimums:
+  vod_sites: 1
+  live_channels: 1
+failure_gate:
+  minimum_previous_items: 5
+  max_new_failure_ratio: 0.20
+network_outage_gate:
+  observation_window_seconds: 60
+  attempts_per_probe: 2
+  retry_delay_seconds: 2
+  connect_timeout_seconds: 3
+  total_timeout_seconds: 5
+  max_redirects: 2
+  failed_groups_to_abort: 2
+network:
+  config_max_bytes: 5242880
+  playlist_max_bytes: 10485760
+  hls_manifest_max_bytes: 2097152
+  media_probe_max_bytes: 1048576
+  terms_max_bytes: 1048576
+  connect_timeout_seconds: 5
+  read_timeout_seconds: 15
+  max_redirects: 5
+  retries: 3
+  global_concurrency: 20
+  per_host_concurrency: 4
+  total_download_max_bytes: 209715200
+  hls_max_variants: 3
+refresh:
+  due_hours: 240
+  raw_poll_interval_seconds: 5
+  raw_poll_timeout_seconds: 120
+retention:
+  action_artifact_days: 30

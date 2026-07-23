@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/azhansy/ds-tvbox/main/schemas/denylist.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "entries"],
+  "properties": {
+    "version": { "const": 1 },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "source_ids",
+          "hosts",
+          "urls",
+          "reason",
+          "requested_at",
+          "evidence_urls"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "uniqueItems": true
+          },
+          "hosts": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+            "uniqueItems": true
+          },
+          "urls": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^https://" },
+            "uniqueItems": true
+          },
+          "reason": { "enum": ["takedown", "rights_restricted", "security"] },
+          "requested_at": { "type": "string", "format": "date" },
+          "evidence_urls": {
+            "type": "array",
+            "items": { "type": "string", "format": "uri" },
+            "uniqueItems": true
+          }
+        },
+        "anyOf": [
+          { "properties": { "source_ids": { "minItems": 1 } } },
+          { "properties": { "hosts": { "minItems": 1 } } },
+          { "properties": { "urls": { "minItems": 1 } } }
+        ]
+      }
+    }
+  }
+}

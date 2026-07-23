@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss>
+  <list>
+    <video>
+      <id>101</id><name>测试影片</name>
+      <dl><dd flag="hls">正片$https://media.example.test/movie/index.m3u8</dd></dl>
+    </video>
+  </list>
+</rss>

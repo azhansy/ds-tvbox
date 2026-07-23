@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/azhansy/ds-tvbox/main/schemas/candidates.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "workflow_run_id",
+    "workflow_run_attempt",
+    "catalogs",
+    "candidates"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "workflow_run_id": { "type": "string", "minLength": 1 },
+    "workflow_run_attempt": { "type": "integer", "minimum": 1 },
+    "catalogs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "reviewed_revision",
+          "resolved_revision",
+          "technical_status",
+          "publication_status",
+          "inconclusive",
+          "files_scanned",
+          "failure_reason",
+          "secondary_reasons"
+        ],
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "reviewed_revision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+          "resolved_revision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+          "technical_status": {
+            "enum": ["unknown", "healthy", "partial", "suspect", "dead", "unsupported_environment"]
+          },
+          "publication_status": { "const": "withheld" },
+          "inconclusive": { "type": "boolean" },
+          "files_scanned": { "type": "integer", "minimum": 0 },
+          "failure_reason": { "$ref": "#/$defs/nullableFailure" },
+          "secondary_reasons": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/failure" },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_id",
+          "kind",
+          "normalized_target_hash",
+          "technical_status",
+          "rights_status",
+          "publication_status",
+          "evidence_locations",
+          "failure_reason",
+          "secondary_reasons"
+        ],
+        "properties": {
+          "candidate_id": {
+            "type": "string",
+            "pattern": "^candidate:[a-z0-9]+(?:-[a-z0-9]+)*:[0-9a-f]{16}$"
+          },
+          "kind": { "enum": ["vod_site", "live_url", "nested_config"] },
+          "normalized_target_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "technical_status": {
+            "enum": ["unknown", "healthy", "partial", "suspect", "dead", "unsupported_environment"]
+          },
+          "rights_status": { "const": "unknown" },
+          "publication_status": { "const": "withheld" },
+          "evidence_locations": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "failure_reason": { "$ref": "#/$defs/nullableFailure" },
+          "secondary_reasons": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/failure" },
+            "uniqueItems": true
+          },
+          "url": { "type": "string", "pattern": "^https://" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "failure": {
+      "enum": [
+        "fetch_timeout",
+        "dns_failure",
+        "tls_failure",
+        "http_404",
+        "http_410",
+        "rate_limited",
+        "upstream_5xx",
+        "invalid_json",
+        "invalid_xml",
+        "schema_incompatible",
+        "home_contract_failed",
+        "search_contract_failed",
+        "detail_contract_failed",
+        "play_contract_failed",
+        "media_probe_failed",
+        "credential_required",
+        "credential_query_rejected",
+        "credential_header_rejected",
+        "invalid_header_syntax",
+        "private_address_rejected",
+        "dangerous_scheme_rejected",
+        "response_too_large",
+        "client_http_disallowed",
+        "client_header_unsupported",
+        "client_extension_unsupported",
+        "unsupported_spider",
+        "unsupported_environment",
+        "blocked_by_source",
+        "missing_upstream",
+        "terms_changed",
+        "rights_restricted",
+        "takedown",
+        "catalog_depth_exceeded",
+        "catalog_limit_exceeded"
+      ]
+    },
+    "nullableFailure": {
+      "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/failure" }]
+    }
+  }
+}

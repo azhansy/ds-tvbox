@@ -1,0 +1,88 @@
+version: 1
+sources:
+  - id: ikun-vod
+    kind: vod_site
+    parser: maccms_json
+    enabled: true
+    fetch:
+      mode: direct_url
+      reviewed_url: https://ikunzyapi.com/api.php/provide/vod
+      repository_url: null
+      track_ref: null
+      config_path: null
+      reviewed_revision: null
+    terms_watch:
+      - type: url
+        url: https://www.ikunzy.com/ikun/help.html
+        path: null
+        reviewed_sha256: 6e56ee8d95be04050c02f39f423a3d19b02115f4accb6927db2dd763068cc35b
+    discovery_evidence:
+      repository_url: https://github.com/miru-project/repo
+      revision: 651821e2ea4213b48040e84c5e851f7c2c1082db
+      config_path: repo/vod.api.json.collection.js
+      selector:
+        key_equals: ikun
+        api_equals: https://ikunzyapi.com/api.php/provide/vod
+    rights_status: public_unverified
+    config_license_status: unknown
+    content_rights_status: unverified
+    license_spdx: NOASSERTION
+    license_url: null
+    rights_evidence:
+      summary: Public no-login collection endpoint; API and media rights are unverified.
+      urls:
+        - https://www.ikunzy.com/ikun/help.html
+        - https://github.com/miru-project/repo/blob/651821e2ea4213b48040e84c5e851f7c2c1082db/repo/vod.api.json.collection.js#L29
+    allowed_hosts: [ikunzyapi.com, www.ikunzy.com]
+    allow_discovered_media_hosts: true
+    http_exceptions: []
+    category_policy:
+      deny_names: [伦理片, 里番动漫]
+    client_site:
+      key: ikun_vod
+      name: iKun 资源
+      searchable: 1
+      quickSearch: 1
+      filterable: 1
+      changeable: 1
+    catalog: null
+    reviewed_at: 2026-07-22
+
+  - id: iptv-org-cn-cctv
+    kind: live_playlist
+    parser: m3u
+    enabled: true
+    fetch:
+      mode: github_tracked_file
+      reviewed_url: https://raw.githubusercontent.com/iptv-org/iptv/061e61103edeab1ecd1bc4d99cb38992f003653e/streams/cn_cctv.m3u
+      repository_url: https://github.com/iptv-org/iptv
+      track_ref: master
+      config_path: streams/cn_cctv.m3u
+      reviewed_revision: 061e61103edeab1ecd1bc4d99cb38992f003653e
+    terms_watch:
+      - type: github_path
+        url: null
+        path: LICENSE
+        reviewed_sha256: 640514163b17f977adc997cb16f51871122cfb0555ebad1a3f01e167b7ba8857
+      - type: github_path
+        url: null
+        path: README.md
+        reviewed_sha256: cf46be9e40b9ee97e120b0c2461b8316b1d7872682b91ccada76e69e88b72563
+    discovery_evidence: null
+    rights_status: public_unverified
+    config_license_status: verified
+    content_rights_status: unverified
+    license_spdx: Unlicense
+    license_url: https://github.com/iptv-org/iptv/blob/061e61103edeab1ecd1bc4d99cb38992f003653e/LICENSE
+    rights_evidence:
+      summary: Playlist data is Unlicense; referenced broadcast content rights are unverified.
+      urls:
+        - https://github.com/iptv-org/iptv/blob/061e61103edeab1ecd1bc4d99cb38992f003653e/LICENSE
+    allowed_hosts: [api.github.com, raw.githubusercontent.com]
+    allow_discovered_media_hosts: true
+    http_exceptions: []
+    category_policy:
+      deny_names: []
+    client_site: null
+    catalog: null
+    reviewed_at: 2026-07-22
