@@ -1,13 +1,13 @@
 {
-  "active_release_id": "g00000001",
-  "content_commit_sha": "727e41369c59dddc58395ce6a24bc90cf233e9c1",
-  "generation": 1,
+  "active_release_id": "g00000002",
+  "content_commit_sha": null,
+  "generation": 2,
   "last_publish_at": "2026-07-23T02:24:58Z",
   "last_success_at": "2026-07-23T02:24:58Z",
-  "previous_release_head_sha": null,
-  "release_kind": "bootstrap",
+  "previous_release_head_sha": "44c4eabe9980ef2e8c99e836465b1e01c57b4ead",
+  "release_kind": "regular",
   "schema_version": "1.0.0",
-  "status": "success",
+  "status": "pending",
   "workflow_run_attempt": 1,
-  "workflow_run_id": "29974298927"
+  "workflow_run_id": "30765244585"
 }

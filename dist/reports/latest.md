@@ -1,17 +1,17 @@
 # DS TVBox 刷新报告
 
-- 状态：`success`
-- 发布类型：`bootstrap`
-- generation：`1`
-- active release：`g00000001`
-- Workflow：`29974298927/1`
-- 候选 ref：`candidate/run-29974298927-attempt-1`
-- 内容来源事件：`29974298927/1`
-- 上一 generated HEAD：``
-- 内容提交：`727e41369c59dddc58395ce6a24bc90cf233e9c1`
-- due / force / recovery：`False` / `True` / `False`
-- 开始：`2026-07-23T02:24:13Z`
-- 结束：`2026-07-23T02:24:58Z`
+- 状态：`pending`
+- 发布类型：`regular`
+- generation：`2`
+- active release：`g00000002`
+- Workflow：`30765244585/1`
+- 候选 ref：`candidate/run-30765244585-attempt-1`
+- 内容来源事件：`30765244585/1`
+- 上一 generated HEAD：`44c4eabe9980ef2e8c99e836465b1e01c57b4ead`
+- 内容提交：``
+- due / force / recovery：`True` / `False` / `False`
+- 开始：`2026-08-02T20:16:46Z`
+- 结束：`2026-08-02T20:17:02Z`
 
 ## 数量
 
@@ -23,14 +23,14 @@
 - current_unknown: `0`
 - current_verified: `0`
 - current_vod_sites: `1`
-- previous_live_channels: `0`
+- previous_live_channels: `2`
 - previous_open_license: `0`
-- previous_public_unverified: `0`
+- previous_public_unverified: `2`
 - previous_restricted: `0`
 - previous_takedown: `0`
 - previous_unknown: `0`
 - previous_verified: `0`
-- previous_vod_sites: `0`
+- previous_vod_sites: `1`
 
 ## 失败原因
 
@@ -47,7 +47,7 @@
 
 | 来源 | 变化 | 技术状态 | 发布状态 | 权利状态 | 失败原因 |
 | --- | --- | --- | --- | --- | --- |
-| `ikun-vod` | `new` | `healthy` | `stable` | `public_unverified` | `` |
-| `iptv-org-cn-cctv` | `new` | `healthy` | `stable` | `public_unverified` | `` |
+| `ikun-vod` | `unchanged` | `healthy` | `stable` | `public_unverified` | `` |
+| `iptv-org-cn-cctv` | `unchanged` | `healthy` | `stable` | `public_unverified` | `` |
 
 > `public_unverified` 仅表示公开可访问且通过技术验效，不代表内容已获授权。
