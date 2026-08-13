@@ -1,7 +1,7 @@
 {
   "active_release_id": "g00000003",
   "candidate_ref": "candidate/run-31738582547-attempt-1",
-  "content_commit_sha": null,
+  "content_commit_sha": "890aded1c834ca5f8626e47250e634cc0ae8e019",
   "content_identity": {
     "workflow_run_attempt": 1,
     "workflow_run_id": "31738582547"
@@ -29,7 +29,7 @@
     "credential_query_rejected": 12,
     "response_too_large": 1
   },
-  "finished_at": "2026-08-13T19:59:43Z",
+  "finished_at": "2026-08-13T20:00:14Z",
   "forced": false,
   "gate": {
     "historical_deletions": [],
@@ -137,7 +137,7 @@
     }
   ],
   "started_at": "2026-08-13T19:59:27Z",
-  "status": "pending",
+  "status": "success",
   "workflow_run_attempt": 1,
   "workflow_run_id": "31738582547"
 }
