@@ -1,10 +1,10 @@
 {
-  "active_release_id": "g00000002",
-  "candidate_ref": "candidate/run-30765244585-attempt-1",
-  "content_commit_sha": "b132e35e24326ec4c43fa5d76c532286236aa0d2",
+  "active_release_id": "g00000003",
+  "candidate_ref": "candidate/run-31738582547-attempt-1",
+  "content_commit_sha": null,
   "content_identity": {
     "workflow_run_attempt": 1,
-    "workflow_run_id": "30765244585"
+    "workflow_run_id": "31738582547"
   },
   "counts": {
     "current_live_channels": 2,
@@ -29,7 +29,7 @@
     "credential_query_rejected": 12,
     "response_too_large": 1
   },
-  "finished_at": "2026-08-02T20:17:33Z",
+  "finished_at": "2026-08-13T19:59:43Z",
   "forced": false,
   "gate": {
     "historical_deletions": [],
@@ -48,28 +48,28 @@
       {
         "attempts": 1,
         "detail": "ok",
-        "elapsed_ms": 281,
+        "elapsed_ms": 342,
         "group": "cloudflare_http",
         "passed": true
       },
       {
         "attempts": 2,
         "detail": "ok",
-        "elapsed_ms": 250,
+        "elapsed_ms": 334,
         "group": "dns_public",
         "passed": true
       },
       {
         "attempts": 1,
         "detail": "ok",
-        "elapsed_ms": 537,
+        "elapsed_ms": 427,
         "group": "github_raw",
         "passed": true
       },
       {
         "attempts": 1,
         "detail": "ok",
-        "elapsed_ms": 256,
+        "elapsed_ms": 454,
         "group": "google_http",
         "passed": true
       }
@@ -85,8 +85,8 @@
       "minimum_vod_sites": 1
     }
   },
-  "generation": 2,
-  "previous_release_head_sha": "44c4eabe9980ef2e8c99e836465b1e01c57b4ead",
+  "generation": 3,
+  "previous_release_head_sha": "1e5443cd71c4db4b27d48065b66e48d85f4481b4",
   "recovery_due": false,
   "release_kind": "regular",
   "schema_version": "1.0.0",
@@ -133,11 +133,11 @@
       "secondary_reasons": [],
       "source_id": "iptv-org-cn-cctv",
       "technical_status": "healthy",
-      "upstream_revision": "23852209ad9e4e35400730a4f6f4e4cf946f3070"
+      "upstream_revision": "ae883534a8eb618e116cbb9f59637dae81ffa834"
     }
   ],
-  "started_at": "2026-08-02T20:16:46Z",
-  "status": "success",
+  "started_at": "2026-08-13T19:59:27Z",
+  "status": "pending",
   "workflow_run_attempt": 1,
-  "workflow_run_id": "30765244585"
+  "workflow_run_id": "31738582547"
 }

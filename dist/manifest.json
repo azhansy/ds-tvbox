@@ -1,19 +1,19 @@
 {
-  "active_release_id": "g00000002",
+  "active_release_id": "g00000003",
   "aliases": {
-    "dist/configs/stable.json": "sha256:f189eb7f56eecca3b79543966263f1c7b49ecbdad0a2b0a710d296b1800b43e3",
-    "dist/health.json": "sha256:5eb20595b249fb364c5a2fbab9689d67c234b67037b16348274b35345f92485d",
-    "dist/index.json": "sha256:1acaedd920c97ac9fe1e852f53e76c58c03fa143957a2ea340fb525740fbdab8",
+    "dist/configs/stable.json": "sha256:984af54e5d6faabddf752f2dcbc78c108c67c24659652b9b23bc9c2cbbd15e4c",
+    "dist/health.json": "sha256:4f7b811b046e67e1604c6f47d4a8891d7634f2ccb78ecd95c4dbabbedb86c808",
+    "dist/index.json": "sha256:7ef5b0ae7e1eef72a841512313d59e5bc7bc301c0c2742707e25ff0035b2d52a",
     "dist/live/stable.m3u": "sha256:ce9a68ae341ca92f0fd8f575e523075d93f0a0eb4f7d047c955149dd8afe7234",
-    "dist/warehouse.json": "sha256:2af2c6bad7ae7909da5417bd1394db081675c067b2a841f615fe873f1e7d72b1"
+    "dist/warehouse.json": "sha256:c7292deb9b344e3f97f21eb7d16259ada7f2fc88add872f270942218047494cf"
   },
   "content_workflow_run_attempt": 1,
-  "content_workflow_run_id": "30765244585",
-  "generated_at": "2026-08-02T20:16:46Z",
-  "previous_commit_sha": "44c4eabe9980ef2e8c99e836465b1e01c57b4ead",
+  "content_workflow_run_id": "31738582547",
+  "generated_at": "2026-08-13T19:59:27Z",
+  "previous_commit_sha": "1e5443cd71c4db4b27d48065b66e48d85f4481b4",
   "release_manifest": {
-    "path": "dist/releases/g00000002/manifest.json",
-    "sha256": "sha256:6c7c2619c7156d4289c8aee171c7eb72c935ef30481df7f830f75f24f1941c65"
+    "path": "dist/releases/g00000003/manifest.json",
+    "sha256": "sha256:316ceb21dd05ee2f8828a7407f3bd74990c100f6f7873275be2a4f297aaa215b"
   },
   "schema_version": "1.0.0"
 }
