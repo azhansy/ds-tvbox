@@ -1,0 +1,46 @@
+{
+  "artifacts": {
+    "dist/releases/g00000004/configs/ikun-vod.json": "sha256:f9dfa0813a266049fa46da1826117f43ec31975b66e7f3947325bc8e9c5b75f7",
+    "dist/releases/g00000004/configs/stable.json": "sha256:f9dfa0813a266049fa46da1826117f43ec31975b66e7f3947325bc8e9c5b75f7",
+    "dist/releases/g00000004/depots/public-unverified.json": "sha256:e7d7ce5823e3fea379ee066351df9fbcf33f4bfa235b24f4a3679d350ebf4517",
+    "dist/releases/g00000004/depots/stable.json": "sha256:5f61ff3e264fb659f68b568969b3eb7c3e92718dcac3925c51a5ed66cfad8c7d",
+    "dist/releases/g00000004/health.json": "sha256:1501c77165cc3535a5f088da3e4a508812d2cd5920e0f299881802cec3556964",
+    "dist/releases/g00000004/index.json": "sha256:5f61ff3e264fb659f68b568969b3eb7c3e92718dcac3925c51a5ed66cfad8c7d",
+    "dist/releases/g00000004/live/stable.m3u": "sha256:ce9a68ae341ca92f0fd8f575e523075d93f0a0eb4f7d047c955149dd8afe7234",
+    "dist/releases/g00000004/warehouse.json": "sha256:fdbee1ec4c57296dbf6b2fd0561574fc01263c7613ecaf0761f77a3204dddb8a"
+  },
+  "content_workflow_run_attempt": 1,
+  "content_workflow_run_id": "32891292575",
+  "generated_at": "2026-08-25T19:44:49Z",
+  "generation": 4,
+  "generator_version": "1.0.3",
+  "live_channel_count": 2,
+  "previous_commit_sha": "343aff519924dbb3c2d212d24a5462a14c42881f",
+  "release_id": "g00000004",
+  "schema_version": "1.0.0",
+  "source_count": 2,
+  "upstreams": [
+    {
+      "fetch_mode": "direct_url",
+      "resolved_fetch_url": "https://ikunzyapi.com/api.php/provide/vod",
+      "resolved_revision": null,
+      "reviewed_revision": null,
+      "source_id": "ikun-vod",
+      "terms_sha256": {
+        "https://www.ikunzy.com/ikun/help.html": "6e56ee8d95be04050c02f39f423a3d19b02115f4accb6927db2dd763068cc35b"
+      }
+    },
+    {
+      "fetch_mode": "github_tracked_file",
+      "resolved_fetch_url": "https://raw.githubusercontent.com/iptv-org/iptv/83c4457ba48db3cd9d468fd4ca01e1e07e893ade/streams/cn_cctv.m3u",
+      "resolved_revision": "83c4457ba48db3cd9d468fd4ca01e1e07e893ade",
+      "reviewed_revision": "061e61103edeab1ecd1bc4d99cb38992f003653e",
+      "source_id": "iptv-org-cn-cctv",
+      "terms_sha256": {
+        "LICENSE": "640514163b17f977adc997cb16f51871122cfb0555ebad1a3f01e167b7ba8857",
+        "README.md": "cf46be9e40b9ee97e120b0c2461b8316b1d7872682b91ccada76e69e88b72563"
+      }
+    }
+  ],
+  "vod_site_count": 1
+}
