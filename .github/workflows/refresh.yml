@@ -1,137 +1,52 @@
-name: Refresh TVBox sources
+name: Refresh subscriptions
 
 on:
   schedule:
-    - cron: "17 19 * * *"
+    - cron: '17 * * * *'
   workflow_dispatch:
-    inputs:
-      force:
-        description: Ignore the 240-hour gate
-        required: false
-        type: boolean
-        default: false
-      bootstrap:
-        description: Create the first generated release
-        required: false
-        type: boolean
-        default: false
+  push:
+    branches: [main]
+    paths:
+      - scripts/check_sources.py
+      - requirements.lock
+      - .github/workflows/refresh.yml
 
 permissions: {}
-
 concurrency:
-  group: refresh-tvbox-sources
+  group: refresh-subscriptions
   cancel-in-progress: false
 
 jobs:
-  collect-and-validate:
+  refresh:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 90
-    permissions:
-      contents: read
-    outputs:
-      should_refresh: ${{ steps.due.outputs.should_refresh }}
-      bootstrap_required: ${{ steps.due.outputs.bootstrap_required }}
-      reason: ${{ steps.due.outputs.reason }}
-    steps:
-      - name: Check out source
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: Set up Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
-        with:
-          python-version: "3.11"
-          cache: pip
-          cache-dependency-path: requirements.lock
-
-      - name: Install locked dependencies
-        run: |
-          python -m pip install --require-hashes -r requirements.lock
-          python -m pip install --no-deps --no-build-isolation -e .
-
-      - name: Validate static contracts
-        run: ds-tvbox validate-static --repository .
-
-      - name: Check whether a refresh is due
-        id: due
-        env:
-          FORCE: ${{ github.event_name == 'workflow_dispatch' && inputs.force || false }}
-          BOOTSTRAP: ${{ github.event_name == 'workflow_dispatch' && inputs.bootstrap || false }}
-        run: >-
-          ds-tvbox due-check --repository .
-          --force "$FORCE"
-          --bootstrap "$BOOTSTRAP"
-          --github-output "$GITHUB_OUTPUT"
-
-      - name: Collect and validate sources
-        id: collect
-        if: ${{ steps.due.outputs.should_refresh == 'true' }}
-        env:
-          FORCE: ${{ github.event_name == 'workflow_dispatch' && inputs.force || false }}
-          BOOTSTRAP: ${{ github.event_name == 'workflow_dispatch' && inputs.bootstrap || false }}
-        run: >-
-          ds-tvbox collect --repository .
-          --output action-artifact
-          --force "$FORCE"
-          --bootstrap "$BOOTSTRAP"
-
-      - name: Verify the publish bundle before upload
-        if: ${{ steps.due.outputs.should_refresh == 'true' }}
-        run: ds-tvbox verify-artifact action-artifact/publish
-
-      - name: Upload isolated refresh artifact
-        if: ${{ always() && steps.due.outputs.should_refresh == 'true' }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-        with:
-          name: tvbox-refresh-${{ github.run_id }}-attempt-${{ github.run_attempt }}
-          path: action-artifact
-          if-no-files-found: error
-          retention-days: 30
-
-  publish:
-    needs:
-      - collect-and-validate
-    if: >-
-      ${{ needs['collect-and-validate'].result == 'success' &&
-      needs['collect-and-validate'].outputs.should_refresh == 'true' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 15
     permissions:
       contents: write
     steps:
-      - name: Check out source with publish credentials
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          fetch-depth: 0
-          persist-credentials: true
-
-      - name: Set up Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
-          python-version: "3.11"
-          cache: pip
-          cache-dependency-path: requirements.lock
-
-      - name: Install locked dependencies
+          python-version: '3.11'
+      - name: Install parser
+        run: python -m pip install --require-hashes -r requirements.lock
+      - name: Test checker
+        run: python -m unittest discover -s tests
+      - name: Check upstream subscriptions
+        id: check
+        run: python scripts/check_sources.py
+      - name: Update README and check record
+        if: ${{ !cancelled() && steps.check.outputs.ready == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          python -m pip install --require-hashes -r requirements.lock
-          python -m pip install --no-deps --no-build-isolation -e .
-
-      - name: Download this attempt's artifact
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
-        with:
-          name: tvbox-refresh-${{ github.run_id }}-attempt-${{ github.run_attempt }}
-          path: action-artifact
-
-      - name: Re-verify the untrusted publish bundle
-        run: ds-tvbox verify-artifact action-artifact/publish
-
-      - name: Configure release identity
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-      - name: Publish verified release
-        run: ds-tvbox publish --repository . --artifact action-artifact/publish
+          git add -- README.md checks.json
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'docs: 更新订阅地址和检测状态'
+          gh auth setup-git
+          git push origin HEAD:main
