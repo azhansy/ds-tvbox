@@ -30,10 +30,20 @@ http://www.饭太硬.cc/tv
 
 内容指纹：`3e1fce773e81`。
 
+## 下载直播文件
+
+[下载 result.m3u](https://github.com/azhansy/ds-tvbox/releases/download/playlist-latest/result.m3u) · [查看发布页和更新时间](https://github.com/azhansy/ds-tvbox/releases/tag/playlist-latest)
+
+下载后传到电视或 U 盘，在支持本地直播文件的客户端中选择它。播放频道仍需联网，本地文件需手动重新下载更新。
+
+附件是上次成功发布的直播列表，更新时间以发布页为准；直播检测或上传失败时保留旧附件。
+
 ## 自动更新
 
-- Action 每小时检查一次，也可在 Actions 页面手动运行 Refresh subscriptions。
+- 直播、点播检测及 Release 同步每两天执行一次，也可在 Actions 页面手动运行 Refresh subscriptions。
+- Action 每日 UTC 19:17（北京时间次日 03:17）判断日期，按连续 UTC 天数隔天执行，跨月不重置；非执行日不访问订阅源。GitHub 排队可能延迟运行。
 - 直播直接使用 Guovin 的 result.m3u；不再自行采集、合并或筛选频道。
+- 直播列表检测通过后同步到本仓库的固定 Release，附件为 result.m3u；内容不变时不重复上传。
 - 点播从[饭太硬导航页](https://www.xn--sss604efuw.net/)发现主/备用入口，检查配置和插件后才写入地址。
 - 仅内容或检测状态变化时提交 README 和检查记录；失败保留上次地址、标记异常并让 Action 报错。每次运行时间和结果见 Action 摘要。
 - 本项目不执行点播插件。配置检查通过不等于全部影片能播放；电视端效果取决于客户端和所在网络。

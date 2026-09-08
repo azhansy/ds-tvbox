@@ -2,12 +2,12 @@ name: Refresh subscriptions
 
 on:
   schedule:
-    - cron: '17 * * * *'
+    - cron: '17 19 * * *'
   workflow_dispatch:
   push:
     branches: [main]
     paths:
-      - scripts/check_sources.py
+      - scripts/**
       - requirements.lock
       - .github/workflows/refresh.yml
 
@@ -24,20 +24,39 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Check two-day schedule
+        id: schedule
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          # Absolute UTC day parity keeps the two-day interval across month boundaries.
+          if [[ "$EVENT_NAME" != schedule ]] || (( $(date -u +%s) / 86400 % 2 == 0 )); then
+            echo 'due=true' >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        if: steps.schedule.outputs.due == 'true'
         with:
           ref: main
           persist-credentials: false
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        if: steps.schedule.outputs.due == 'true'
         with:
           python-version: '3.11'
       - name: Install parser
+        if: steps.schedule.outputs.due == 'true'
         run: python -m pip install --require-hashes -r requirements.lock
       - name: Test checker
+        if: steps.schedule.outputs.due == 'true'
         run: python -m unittest discover -s tests
       - name: Check upstream subscriptions
+        if: steps.schedule.outputs.due == 'true'
         id: check
         run: python scripts/check_sources.py
+      - name: Publish result.m3u release asset
+        if: ${{ !cancelled() && steps.check.outputs.live_ready == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/publish_playlist.py
       - name: Update README and check record
         if: ${{ !cancelled() && steps.check.outputs.ready == 'true' }}
         env:

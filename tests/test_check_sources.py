@@ -32,6 +32,23 @@ class Checks(unittest.TestCase):
                     with self.assertRaises(ValueError):
                         check.check_live()
 
+    def test_playlist_export_and_failure_gate(self):
+        valid = '#EXTM3U\n#EXTINF:-1,广东珠江\nhttp://example.com/a\n#EXTINF:-1,广东卫视\nhttp://example.com/b\n'.encode()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with patch.object(check, 'ROOT', root), patch.object(check, 'fetch', return_value=(valid, check.LIVE_URL)) as fetch, \
+                    patch.object(check, 'check_vod', side_effect=ValueError('vod failed')), \
+                    patch.dict(check.os.environ, {'GITHUB_OUTPUT': str(root / 'output'), 'GITHUB_STEP_SUMMARY': ''}), \
+                    patch('builtins.print'):
+                self.assertEqual(check.main(), 1)
+                self.assertEqual((root / 'build/result.m3u').read_bytes(), valid)
+                self.assertIn('live_ready=true', (root / 'output').read_text())
+                fetch.return_value = (b'<html>error</html>', check.LIVE_URL)
+                (root / 'output').write_text('')
+                self.assertEqual(check.main(), 1)
+                self.assertFalse((root / 'build/result.m3u').exists())
+                self.assertIn('live_ready=false', (root / 'output').read_text())
+
     def test_vod_checks_jar_and_fallback(self):
         jar = io.BytesIO()
         with zipfile.ZipFile(jar, 'w') as archive:
