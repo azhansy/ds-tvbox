@@ -10,6 +10,27 @@ from scripts import publish_playlist as publish
 
 
 class PublishChecks(unittest.TestCase):
+    def test_create_and_resume_draft_release(self):
+        for exists in (False, True):
+            with self.subTest(exists=exists), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                (root / 'build').mkdir()
+                (root / 'build/result.m3u').write_bytes(b'checked')
+                digest = hashlib.sha256(b'checked').hexdigest()
+                (root / 'checks.json').write_text(json.dumps({'live': {'status': 'ok', 'version': digest}}))
+                draft = dict(id=10, tag_name=publish.TAG, draft=True, assets=[])
+                with patch.object(publish, 'ROOT', root), \
+                        patch.dict(publish.os.environ, {'GITHUB_REPOSITORY': 'test/repo', 'GITHUB_SHA': 'head'}), \
+                        patch.object(publish, 'gh', return_value=json.dumps([[draft] if exists else []]).encode()) as gh, \
+                        patch.object(publish, 'api', return_value=draft) as api, \
+                        patch.object(publish, 'replace_asset', return_value=True) as replace, patch('builtins.print'):
+                    publish.main()
+                    gh.assert_called_once_with('api', 'repos/test/repo/releases?per_page=100', '--paginate', '--slurp')
+                    replace.assert_called_once()
+                    creates = [call for call in api.call_args_list if call.kwargs.get('method') == 'POST']
+                    self.assertEqual(len(creates), 0 if exists else 1)
+                    self.assertTrue(any(call.kwargs.get('draft') == 'false' for call in api.call_args_list))
+
     def test_upload_verify_replace_and_failures_preserve_old(self):
         for scenario in ('success', 'unchanged', 'upload_failure', 'bad_download', 'rename_failure', 'recover'):
             with self.subTest(scenario=scenario), tempfile.TemporaryDirectory() as directory:

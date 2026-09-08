@@ -17,12 +17,12 @@ def gh(*args):
     return subprocess.check_output(['gh', *args], stderr=subprocess.PIPE, timeout=120)
 
 
-def api(path, **fields):
+def api(path, method='PATCH', **fields):
     args = ['api', path]
     for key, value in fields.items():
         args += ['-F', f'{key}={value}']
     if fields:
-        args += ['--method', 'PATCH']
+        args += ['--method', method]
     return json.loads(gh(*args))
 
 
@@ -67,14 +67,13 @@ def main():
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
     if live['status'] != 'ok' or digest != live['version']:
         raise ValueError('附件与本次通过检测的直播列表不一致')
-    try:
-        release = api(f'{base}/releases/tags/{TAG}')
-    except subprocess.CalledProcessError as error:
-        if b'HTTP 404' not in error.stderr:
-            raise
-        gh('release', 'create', TAG, '--draft', '--target', os.environ['GITHUB_SHA'],
-           '--title', '最新直播列表', '--notes', '等待直播附件上传完成。')
-        release = api(f'{base}/releases/tags/{TAG}')
+    # The by-tag endpoint excludes drafts; list releases to resume interrupted creation.
+    pages = json.loads(gh('api', f'{base}/releases?per_page=100', '--paginate', '--slurp'))
+    release = next((item for page in pages for item in page if item['tag_name'] == TAG), None)
+    if release is None:
+        release = api(f'{base}/releases', method='POST', tag_name=TAG,
+                      target_commitish=os.environ['GITHUB_SHA'], draft='true',
+                      name='最新直播列表', body='等待直播附件上传完成。')
     changed = replace_asset(base, release, path, digest)
     if changed or release['draft'] or digest not in (release.get('body') or ''):
         now = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
