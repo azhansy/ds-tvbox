@@ -1,18 +1,18 @@
 {
   "live": {
     "url": "https://github.com/Guovin/iptv-api/releases/download/playlist-latest/result.m3u",
-    "version": "ec4e232c11b986b207e5d98522c86e2d8938a93fa2092e7e3be70424ce9b2ab1",
-    "detail": "M3U 格式通过，1287 条线路，含珠江台和卫视；频道播放由上游检测，本项目未逐台验证",
+    "version": "c97b52fe28b42868fae4299d3d7f080c78f19e286f11a3261b321634afd0ca11",
+    "detail": "M3U 格式通过，1235 条线路，含珠江台和卫视；频道播放由上游检测，本项目未逐台验证",
     "status": "ok",
-    "updated_at": "2026-09-08 07:56 UTC",
-    "verified_at": "2026-09-08 07:56 UTC"
+    "updated_at": "2026-09-18 21:40 UTC",
+    "verified_at": "2026-09-18 21:40 UTC"
   },
   "vod": {
     "url": "http://www.饭太硬.cc/tv",
-    "version": "a5b9ddcfaaefbdb0a70a153cc159a4d9d5a40395eb8015e6538fd8dde117719e",
+    "version": "4429ce8146dfe0fd6eccbd3f1b4c103f7737b7062cc6d0faef02f26348227722",
     "detail": "配置解析、49 个站点结构、插件 DEX 和 MD5 校验通过；电视端搜索及影片播放未验证",
     "status": "ok",
-    "updated_at": "2026-09-10 21:36 UTC",
-    "verified_at": "2026-09-10 21:36 UTC"
+    "updated_at": "2026-09-18 21:40 UTC",
+    "verified_at": "2026-09-18 21:40 UTC"
   }
 }
