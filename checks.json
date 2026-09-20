@@ -1,11 +1,11 @@
 {
   "live": {
     "url": "https://github.com/Guovin/iptv-api/releases/download/playlist-latest/result.m3u",
-    "version": "c97b52fe28b42868fae4299d3d7f080c78f19e286f11a3261b321634afd0ca11",
-    "detail": "M3U 格式通过，1235 条线路，含珠江台和卫视；频道播放由上游检测，本项目未逐台验证",
+    "version": "30e78fb068be293ae94ac311ed477bb4014dbc74f7043c3781e9556c83a19c99",
+    "detail": "M3U 格式通过，1134 条线路，含珠江台和卫视；频道播放由上游检测，本项目未逐台验证",
     "status": "ok",
-    "updated_at": "2026-09-18 21:40 UTC",
-    "verified_at": "2026-09-18 21:40 UTC"
+    "updated_at": "2026-09-20 21:31 UTC",
+    "verified_at": "2026-09-20 21:31 UTC"
   },
   "vod": {
     "url": "http://www.饭太硬.cc/tv",
