@@ -9,10 +9,10 @@
   },
   "vod": {
     "url": "http://www.饭太硬.cc/tv",
-    "version": "dfef4f099c996196b09924d57c35ce3bf8f2ac6b32e3b22cfdd4722b695d24d4",
+    "version": "40a31fe2d372f468ac49a2aa2509013ad39bb0d26da56ef2ee3e249ae9bf6562",
     "detail": "配置解析、49 个站点结构、插件 DEX 和 MD5 校验通过；电视端搜索及影片播放未验证",
     "status": "ok",
-    "updated_at": "2026-10-20 22:16 UTC",
-    "verified_at": "2026-10-20 22:16 UTC"
+    "updated_at": "2026-10-22 22:18 UTC",
+    "verified_at": "2026-10-22 22:18 UTC"
   }
 }
